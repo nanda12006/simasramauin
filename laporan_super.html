@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan Asrama - SIM Asrama UIN Saizu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      background-color: #f5f8f7;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 250px;
+      background-color: #007e5a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100%;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      padding: 25px;
+      background-color: #009b72;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      margin-top: 10px;
+    }
+
+    .sidebar ul li {
+      padding: 14px 25px;
+      transition: 0.3s;
+    }
+
+    .sidebar ul li:hover,
+    .sidebar ul li.active {
+      background-color: #00b985;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar i {
+      font-size: 18px;
+      width: 22px;
+      text-align: center;
+    }
+
+    .logout-btn {
+      background: none;
+      color: white;
+      border: 1px solid white;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-size: 14px;
+      cursor: pointer;
+      margin: 30px auto;
+      width: 80%;
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: white;
+      color: #007e5a;
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      margin-left: 250px;
+      padding: 30px 40px;
+      width: calc(100% - 250px);
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .top-bar h1 {
+      color: #006d55;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: #e8f3ef;
+      padding: 6px 15px;
+      border-radius: 30px;
+    }
+
+    .profile img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+
+    .profile span {
+      color: #006d55;
+      font-weight: 500;
+    }
+
+    /* CARD */
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      margin-bottom: 25px;
+    }
+
+    .card h3 {
+      color: #007e5a;
+      margin-bottom: 15px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-bar select,
+    .filter-bar input {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .export-btn {
+      background-color: #00a67a;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+
+    .export-btn:hover {
+      background-color: #008f66;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #007e5a;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .status {
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 6px;
+    }
+
+    .status.selesai {
+      background-color: #c8e6c9;
+      color: #2e7d32;
+    }
+
+    .status.proses {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .status.ditolak {
+      background-color: #f8d7da;
+      color: #842029;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2><i class="fa-solid fa-user-gear"></i> Super Admin</h2>
+    <ul>
+      <li><a href="superadmin.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+      <li><a href="kelola_admin.html"><i class="fa-solid fa-users-gear"></i> Kelola Admin</a></li>
+      <li><a href="data_asrama.html"><i class="fa-solid fa-building-user"></i> Data Asrama</a></li>
+      <li class="active"><a href="laporan_super.html"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
+      <li><a href="pengaturan_super.html"><i class="fa-solid fa-sliders"></i> Pengaturan</a></li>
+    </ul>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="top-bar">
+      <h1><i class="fa-solid fa-file-lines"></i> Laporan Asrama</h1>
+      <div class="profile">
+        <img src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png" alt="Super Admin">
+        <span>Super Admin</span>
+      </div>
+    </div>
+
+    <!-- CARD -->
+    <div class="card">
+      <h3><i class="fa-solid fa-list"></i> Daftar Laporan</h3>
+
+      <div class="filter-bar">
+        <div>
+          <select>
+            <option>Semua Asrama</option>
+            <option>Asrama Putri</option>
+            <option>Asrama Putri</option>
+            <option>Asrama Putri</option>
+          </select>
+          <input type="text" placeholder="Cari laporan...">
+        </div>
+        <button class="export-btn"><i class="fa-solid fa-file-export"></i> Ekspor PDF</button>
+      </div>
+
+      <table>
+        <tr>
+          <th>No</th>
+          <th>Judul Laporan</th>
+          <th>Asrama</th>
+          <th>Tanggal</th>
+          <th>Status</th>
+          <th>Dibuat Oleh</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Kebocoran Pipa Air</td>
+          <td>Asrama Putri</td>
+          <td>10 November 2025</td>
+          <td><span class="status proses">Dalam Proses</span></td>
+          <td>Nanda Wicaksono</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Kerusakan Lampu Lorong</td>
+          <td>Asrama Putri</td>
+          <td>7 November 2025</td>
+          <td><span class="status selesai">Selesai</span></td>
+          <td>Nabila Rahma</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Kehilangan Barang</td>
+          <td>Asrama Putri</td>
+          <td>4 November 2025</td>
+          <td><span class="status ditolak">Ditolak</span></td>
+          <td>Rizky Maulana</td>
+        </tr>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    function logout() {
+      if (confirm("Yakin ingin keluar?")) {
+        window.location.href = "index.html";
+      }
+    }
+  </script>
+</body>
+</html>

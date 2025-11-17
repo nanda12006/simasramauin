@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Penghuni - Admin Asrama</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif;}
+    body {display: flex; background-color: #f5f8f7; min-height: 100vh; overflow-x: hidden;}
+    
+    /* SIDEBAR */
+    .sidebar {
+      width: 250px; background-color: #007e5a; color: white;
+      display: flex; flex-direction: column; position: fixed; height: 100%;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+    }
+    .sidebar h2 {text-align: center; padding: 25px; background-color: #009b72; font-size: 18px; font-weight: 600;}
+    .sidebar ul {list-style: none; margin-top: 10px;}
+    .sidebar ul li {
+      padding: 14px 25px; cursor: pointer; transition: 0.3s;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sidebar ul li:hover,
+    .sidebar ul li.active {background-color: #00b985;}
+    .sidebar ul li i {font-size: 18px;}
+    .logout-btn {
+      background: none; color: white; border: 1px solid white;
+      padding: 10px 25px; border-radius: 25px; font-size: 14px;
+      cursor: pointer; margin: 30px auto; width: 80%; transition: 0.3s;
+    }
+    .logout-btn:hover {background: white; color: #007e5a;}
+
+    /* MAIN */
+    .main-content {margin-left: 250px; padding: 30px 40px; width: calc(100% - 250px);}
+    .top-bar {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
+    }
+    .top-bar h1 {color: #006d55; font-size: 24px;}
+    .profile {
+      display: flex; align-items: center; gap: 10px; background-color: #e8f3ef;
+      padding: 6px 15px; border-radius: 30px;
+    }
+    .profile img {width: 36px; height: 36px; border-radius: 50%; background-color: #b3e4d2;}
+    .profile span {color: #006d55; font-weight: 500;}
+
+    /* TABLE */
+    table {
+      width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    th, td {
+      padding: 14px 18px; text-align: left; font-size: 14px;
+    }
+    th {background-color: #009b72; color: white;}
+    tr:nth-child(even) {background-color: #f8f9f9;}
+    tr:hover {background-color: #e8f3ef;}
+    td button {
+      background-color: #009b72; color: white; border: none;
+      padding: 6px 12px; border-radius: 6px; margin-right: 6px; cursor: pointer; transition: 0.2s;
+    }
+    td button.edit {background-color: #007e5a;}
+    td button.delete {background-color: #d9534f;}
+    td button:hover {opacity: 0.85;}
+
+    /* BUTTON TAMBAH */
+    .add-btn {
+      background-color: #009b72; color: white; border: none; padding: 10px 18px;
+      border-radius: 8px; cursor: pointer; font-weight: 500; margin-bottom: 20px; transition: 0.3s;
+    }
+    .add-btn:hover {background-color: #00b985;}
+
+    /* FORM POPUP */
+    .popup {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4); justify-content: center; align-items: center;
+    }
+    .popup-content {
+      background: white; padding: 25px 30px; border-radius: 10px; width: 400px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .popup-content h2 {margin-bottom: 20px; color: #007e5a;}
+    .popup-content input, .popup-content select {
+      width: 100%; padding: 8px 10px; margin-bottom: 12px; border: 1px solid #ccc;
+      border-radius: 6px; font-size: 14px;
+    }
+    .popup-content button {
+      padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer;
+      color: white; font-weight: 500; margin-right: 8px;
+    }
+    .popup-content .save-btn {background-color: #009b72;}
+    .popup-content .cancel-btn {background-color: #d9534f;}
+
+    /* =========================================
+   RESPONSIVE UNTUK TABLET & HP
+   ========================================= */
+@media (max-width: 992px) {
+  .main-content {
+    padding: 25px;
+  }
+
+  .top-bar h1 {
+    font-size: 20px;
+  }
+
+  .profile span {
+    font-size: 14px;
+  }
+}
+
+/* =========================================
+   RESPONSIVE UNTUK HP (LEBAR ≤ 768px)
+   ========================================= */
+@media (max-width: 768px) {
+
+  /* Body layout jadi kolom */
+  body {
+    flex-direction: column;
+  }
+
+  /* Sidebar jadi collapsed */
+  .sidebar {
+    position: fixed;
+    width: 200px;
+    left: -200px;
+    transition: 0.3s ease;
+    z-index: 999;
+  }
+
+  /* Sidebar tebuka */
+  .sidebar.active {
+    left: 0;
+  }
+
+  /* Main content full width */
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .top-bar {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  /* Hamburger button */
+  .hamburger {
+    display: inline-block;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #e8f3ef;
+  }
+
+  .hamburger i {
+    width: 28px;
+    height: 28px;
+    color: #006d55;
+  }
+
+  /* Cards jadi kolom */
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+/* =========================================
+   HP KECIL (LEBAR ≤ 450px)
+   ========================================= */
+@media (max-width: 450px) {
+  .card {
+    padding: 18px;
+  }
+
+  .card h3 {
+    font-size: 15px;
+  }
+
+  .card p {
+    font-size: 13px;
+  }
+
+  .top-bar h1 {
+    font-size: 18px;
+  }
+}
+
+.left-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+  </style>
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2>Admin Asrama</h2>
+    <ul>
+      <li onclick="goTo('dashboard_admin.html')"><i data-feather='home'></i> Dashboard</li>
+      <li class="active" onclick="goTo('data-penghuni.html')"><i data-feather='users'></i> Data Penghuni</li>
+      <li onclick="goTo('jadwal.html')"><i data-feather='calendar'></i> Jadwal</li>
+      <li onclick="goTo('laporan.html')"><i data-feather='file-text'></i> Laporan</li>
+      <li onclick="goTo('pengaturan.html')"><i data-feather='settings'></i> Pengaturan</li>
+    </ul>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="top-bar">
+
+  <div class="left-group">
+    <div class="hamburger" onclick="toggleSidebar()">
+       <i data-feather="menu"></i>
+    </div>
+    <h1>Data Penghuni</h1>
+  </div>
+
+  <div class="profile">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Admin">
+    <span>Admin Asrama</span>
+  </div>
+
+</div>
+
+
+    </div>
+
+    <button class="add-btn" onclick="openPopup()">+ Tambah Penghuni</button>
+
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama</th>
+          <th>Kamar</th>
+          <th>Asal Daerah</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Nanda Wicaksono</td><td>A-01</td><td>Purbalingga</td><td>Aktif</td><td>
+          <button class="edit" onclick="editRow(this)">Edit</button>
+          <button class="delete" onclick="deleteRow(this)">Hapus</button>
+        </td></tr>
+        <tr><td>2</td><td>Kevin</td><td>A-02</td><td>Kuningan</td><td>Aktif</td><td>
+          <button class="edit" onclick="editRow(this)">Edit</button>
+          <button class="delete" onclick="deleteRow(this)">Hapus</button>
+        </td></tr>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- POPUP FORM -->
+  <div class="popup" id="popupForm">
+    <div class="popup-content">
+      <h2 id="formTitle">Tambah Penghuni</h2>
+      <input type="text" id="nama" placeholder="Nama">
+      <input type="text" id="kamar" placeholder="Kamar">
+      <input type="text" id="asal" placeholder="Asal Daerah">
+      <select id="status">
+        <option value="Aktif">Aktif</option>
+        <option value="Cuti">Cuti</option>
+      </select>
+      <div>
+        <button class="save-btn" onclick="saveData()">Simpan</button>
+        <button class="cancel-btn" onclick="closePopup()">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    feather.replace();
+    function toggleSidebar() {
+  document.querySelector(".sidebar").classList.toggle("active");
+}
+
+    let editIndex = null;
+
+    function goTo(page){ window.location.href = page; }
+    function logout(){ if(confirm("Yakin ingin keluar?")) window.location.href = "index.html"; }
+
+    function openPopup(edit = false){
+      document.getElementById('popupForm').style.display = 'flex';
+      if(!edit){ document.getElementById('formTitle').innerText = 'Tambah Penghuni'; clearForm(); }
+    }
+    function closePopup(){
+      document.getElementById('popupForm').style.display = 'none';
+      editIndex = null;
+    }
+
+    function clearForm(){
+      document.getElementById('nama').value = '';
+      document.getElementById('kamar').value = '';
+      document.getElementById('asal').value = '';
+      document.getElementById('status').value = 'Aktif';
+    }
+
+    function saveData(){
+      const nama = document.getElementById('nama').value;
+      const kamar = document.getElementById('kamar').value;
+      const asal = document.getElementById('asal').value;
+      const status = document.getElementById('status').value;
+      if(!nama || !kamar || !asal){ alert('Lengkapi semua data!'); return; }
+
+      const table = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+
+      if(editIndex !== null){
+        const row = table.rows[editIndex];
+        row.cells[1].innerText = nama;
+        row.cells[2].innerText = kamar;
+        row.cells[3].innerText = asal;
+        row.cells[4].innerText = status;
+      } else {
+        const newRow = table.insertRow();
+        newRow.innerHTML = `
+          <td>${table.rows.length}</td>
+          <td>${nama}</td>
+          <td>${kamar}</td>
+          <td>${asal}</td>
+          <td>${status}</td>
+          <td>
+            <button class="edit" onclick="editRow(this)">Edit</button>
+            <button class="delete" onclick="deleteRow(this)">Hapus</button>
+          </td>`;
+      }
+
+      closePopup();
+    }
+
+    function editRow(btn){
+      const row = btn.closest('tr');
+      editIndex = row.rowIndex - 1;
+      document.getElementById('nama').value = row.cells[1].innerText;
+      document.getElementById('kamar').value = row.cells[2].innerText;
+      document.getElementById('asal').value = row.cells[3].innerText;
+      document.getElementById('status').value = row.cells[4].innerText;
+      document.getElementById('formTitle').innerText = 'Edit Penghuni';
+      openPopup(true);
+    }
+
+    function deleteRow(btn){
+      if(confirm('Yakin ingin menghapus data ini?')){
+        const row = btn.closest('tr');
+        row.remove();
+      }
+    }
+  </script>
+</body>
+</html>

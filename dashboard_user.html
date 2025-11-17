@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Penghuni | SIM Asrama UIN Saizu</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f4f8f6;
+      color: #333;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 250px;
+      background-color: #007e5a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      padding: 25px;
+      background-color: #009b72;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      margin-top: 10px;
+    }
+
+    .sidebar ul li {
+      padding: 14px 25px;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar ul li:hover,
+    .sidebar ul li.active {
+      background-color: #00b985;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .sidebar i {
+      font-size: 18px;
+      width: 22px;
+      text-align: center;
+    }
+
+    .logout-btn {
+      background: none;
+      color: white;
+      border: 1px solid white;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-size: 14px;
+      cursor: pointer;
+      margin: 30px auto;
+      width: 80%;
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: white;
+      color: #007e5a;
+    }
+
+    /* ===== CONTENT AREA ===== */
+    .content {
+      margin-left: 250px;
+      flex-grow: 1;
+      padding: 30px 40px;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 30px;
+    }
+
+    .navbar h2 {
+      color: #006d55;
+      font-size: 20px;
+    }
+
+    .navbar .user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: #e8f3ef;
+      padding: 6px 15px;
+      border-radius: 30px;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user span {
+      color: #006d55;
+      font-weight: 500;
+    }
+
+    /* ===== DASHBOARD CARDS ===== */
+    .dashboard-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      background-color: #E8F5E9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 26px;
+      color: #007e5a;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      color: #007e5a;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: #666;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .content { margin-left: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <h2><i class="fa-solid fa-building-columns"></i> Penghuni Asrama</h2>
+    <ul>
+      <li class="active"><a href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+      <li><a href="profil.html"><i class="fa-solid fa-id-card"></i> Profil Saya</a></li>
+      <li><a href="pembayaran.html"><i class="fa-solid fa-wallet"></i> Pembayaran</a></li>
+      <li><a href="jadwaluser.html"><i class="fa-solid fa-calendar-days"></i> Jadwal Kegiatan</a></li>
+      <li><a href="riwayat.html"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat</a></li>
+    </ul>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </aside>
+
+  <!-- ===== CONTENT AREA ===== -->
+  <main class="content">
+    <div class="navbar">
+      <h2><i class="fa-solid fa-house"></i> Dashboard Penghuni</h2>
+      <div class="user">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User" class="user-avatar">
+        <span>Nanda Wicaksono</span>
+      </div>
+    </div>
+
+    <div class="dashboard-cards">
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-bed"></i></div>
+        <h3>Status Kamar</h3>
+        <p>Kamar A3 - Lantai 2</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
+        <h3>Tagihan Bulan Ini</h3>
+        <p>Rp 250.000</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-calendar-days"></i></div>
+        <h3>Jadwal Terdekat</h3>
+        <p>Gotong royong - Sabtu, 10.00</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h3>Riwayat Aktivitas</h3>
+        <p>3 kegiatan terakhir tersimpan</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function logout() {
+      if (confirm("Yakin ingin keluar?")) {
+        window.location.href = ".index.html";
+      }
+    }
+  </script>
+</body>
+</html>

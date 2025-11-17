@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengaturan Super Admin - SIM Asrama UIN Saizu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+    body { display:flex; background-color:#f5f8f7; min-height:100vh; }
+
+    /* Sidebar */
+    .sidebar { width:250px; background:#007e5a; color:white; display:flex; flex-direction:column; position:fixed; height:100%; box-shadow:2px 0 8px rgba(0,0,0,0.15); }
+    .sidebar h2 { text-align:center; padding:25px; background:#009b72; font-size:18px; font-weight:600; }
+    .sidebar ul { list-style:none; margin-top:10px; }
+    .sidebar ul li { padding:14px 25px; transition:0.3s; }
+    .sidebar ul li:hover, .sidebar ul li.active { background:#00b985; }
+    .sidebar ul li a { text-decoration:none; color:white; display:flex; align-items:center; gap:10px; }
+    .sidebar i { font-size:18px; width:22px; text-align:center; }
+    .logout-btn { background:none; color:white; border:1px solid white; padding:10px 25px; border-radius:25px; font-size:14px; cursor:pointer; margin:30px auto; width:80%; transition:0.3s; }
+    .logout-btn:hover { background:white; color:#007e5a; }
+
+    /* Main content */
+    .main-content { margin-left:250px; padding:30px 40px; width:calc(100%-250px); }
+    .top-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; }
+    .top-bar h1 { color:#006d55; font-size:24px; display:flex; align-items:center; gap:10px; }
+    .profile { display:flex; align-items:center; gap:10px; background:#e8f3ef; padding:6px 15px; border-radius:30px; }
+    .profile img { width:36px; height:36px; border-radius:50%; }
+    .profile span { color:#006d55; font-weight:500; }
+
+    .card { background:white; border-radius:16px; padding:25px; box-shadow:0 4px 10px rgba(0,0,0,0.08); margin-bottom:25px; }
+    .card h3 { color:#007e5a; margin-bottom:15px; font-size:18px; display:flex; align-items:center; gap:8px; }
+
+    .setting-item { padding:15px; border:1px solid #ddd; border-radius:12px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:0.3s; }
+    .setting-item:hover { background-color:#f1f8f6; border-color:#00a777; }
+    .setting-item span.title { font-weight:600; color:#006d55; font-size:15px; }
+    .setting-section { display:none; margin-top:10px; margin-bottom:20px; }
+    .form-group { margin-bottom:12px; }
+    label { display:block; margin-bottom:6px; color:#333; font-weight:500; }
+    input, select { width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; font-size:14px; }
+    button.save-btn { background:#007e5a; color:white; border:none; padding:12px 20px; border-radius:10px; font-size:15px; cursor:pointer; margin-top:10px; transition:0.3s; }
+    button.save-btn:hover { background:#009b72; }
+    .color-picker { width:100%; height:30px; border:none; border-radius:12px; cursor:pointer; padding:0; }
+    .color-picker::-webkit-color-swatch-wrapper { padding:0; }
+    .color-picker::-webkit-color-swatch { border-radius:12px; }
+    .toggle { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .toggle input[type="checkbox"] { width:20px; height:20px; cursor:pointer; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { padding:12px; border-bottom:1px solid #ddd; text-align:center; }
+    th { background:#007e5a; color:white; }
+    tr:hover { background:#f1f1f1; }
+
+    @media(max-width:768px){ .sidebar{display:none;} .main-content{margin-left:0;width:100%;} }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <h2><i class="fa-solid fa-user-gear"></i> Super Admin</h2>
+  <ul>
+    <li><a href="superadmin.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+    <li><a href="kelola_admin.html"><i class="fa-solid fa-users-gear"></i> Kelola Admin</a></li>
+    <li><a href="data_asrama.html"><i class="fa-solid fa-building-user"></i> Data Asrama</a></li>
+    <li><a href="laporan_super.html"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
+    <li class="active"><a href="pengaturan_super.html"><i class="fa-solid fa-sliders"></i> Pengaturan</a></li>
+  </ul>
+  <button class="logout-btn" onclick="logout()">Logout</button>
+</aside>
+
+<main class="main-content">
+  <div class="top-bar">
+    <h1><i class="fa-solid fa-sliders"></i> Pengaturan Sistem</h1>
+    <div class="profile">
+      <img src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png" alt="Super Admin">
+      <span>Super Admin</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><i class="fa-solid fa-gear"></i> Menu Pengaturan</h3>
+
+    <!-- Identitas Sistem -->
+    <div class="setting-item" onclick="toggleSection('identitas')">
+      <span class="title"><i class="fa-solid fa-id-badge"></i> Identitas Sistem</span>
+      <i class="fa-solid fa-chevron-down" id="icon-identitas"></i>
+    </div>
+    <div class="setting-section" id="identitas">
+      <div class="form-group">
+        <label>Nama Sistem</label>
+        <input type="text" value="SIM Asrama UIN Saizu">
+      </div>
+      <div class="form-group">
+        <label>Logo Sistem</label>
+        <input type="file" accept="image/*">
+      </div>
+      <div class="form-group">
+        <label>Tema Warna</label>
+        <input type="color" value="#007e5a" class="color-picker">
+      </div>
+      <button class="save-btn">Simpan Identitas</button>
+    </div>
+
+    <!-- Role & Hak Akses -->
+    <div class="setting-item" onclick="toggleSection('role')">
+      <span class="title"><i class="fa-solid fa-user-shield"></i> Role & Hak Akses</span>
+      <i class="fa-solid fa-chevron-down" id="icon-role"></i>
+    </div>
+    <div class="setting-section" id="role">
+      <div class="form-group">
+        <label>Peran Pengguna</label>
+        <select>
+          <option>Super Admin</option>
+          <option>Admin</option>
+          <option>Penghuni</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Batas Akses Fitur</label>
+        <input type="text" placeholder="Misal: Dashboard, Pembayaran, Jadwal">
+      </div>
+      <button class="save-btn">Simpan Role</button>
+    </div>
+
+    <!-- Backup & Restore -->
+    <div class="setting-item" onclick="toggleSection('backup')">
+      <span class="title"><i class="fa-solid fa-database"></i> Backup & Restore Data</span>
+      <i class="fa-solid fa-chevron-down" id="icon-backup"></i>
+    </div>
+    <div class="setting-section" id="backup">
+      <div class="form-group">
+        <label>Backup Otomatis</label>
+        <select>
+          <option>Harian</option>
+          <option>Mingguan</option>
+          <option>Bulanan</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Restore Data</label>
+        <input type="file" accept=".sql,.zip">
+      </div>
+      <button class="save-btn">Simpan Backup</button>
+    </div>
+
+    <!-- Notifikasi Sistem -->
+    <div class="setting-item" onclick="toggleSection('notif')">
+      <span class="title"><i class="fa-solid fa-bell"></i> Notifikasi Sistem</span>
+      <i class="fa-solid fa-chevron-down" id="icon-notif"></i>
+    </div>
+    <div class="setting-section" id="notif">
+      <div class="toggle">
+        <input type="checkbox" checked>
+        <label>Aktifkan Notifikasi Email Tagihan</label>
+      </div>
+      <div class="toggle">
+        <input type="checkbox">
+        <label>Aktifkan Notifikasi Pengumuman</label>
+      </div>
+      <button class="save-btn">Simpan Notifikasi</button>
+    </div>
+
+    <!-- Keamanan Sistem -->
+<div class="setting-item" onclick="toggleSection('security')">
+  <span class="title"><i class="fa-solid fa-lock"></i> Keamanan Sistem</span>
+  <i class="fa-solid fa-chevron-down" id="icon-security"></i>
+</div>
+<div class="setting-section" id="security">
+  <div class="form-group">
+    <label>Pilih Role</label>
+    <select id="role-security" onchange="togglePasswordInputs(this.value)">
+      <option value="self">Super Admin (Akun Sendiri)</option>
+      <option value="admin">Admin</option>
+      <option value="penghuni">Penghuni</option>
+    </select>
+  </div>
+
+  <!-- Password lama hanya untuk Super Admin sendiri -->
+  <div class="form-group" id="old-password-group">
+    <label>Password Lama</label>
+    <input type="password" placeholder="Masukkan password lama">
+  </div>
+
+  <div class="form-group">
+    <label>Password Baru</label>
+    <input type="password" placeholder="Masukkan password baru">
+  </div>
+  <div class="form-group">
+    <label>Konfirmasi Password Baru</label>
+    <input type="password" placeholder="Ulangi password baru">
+  </div>
+  <button class="save-btn">Simpan Keamanan</button>
+</div>
+
+<script>
+function togglePasswordInputs(value) {
+  const oldPasswordGroup = document.getElementById('old-password-group');
+  if(value === 'self'){
+    oldPasswordGroup.style.display = 'block';
+  } else {
+    oldPasswordGroup.style.display = 'none';
+  }
+}
+</script>
+
+
+    <!-- Log Aktivitas -->
+    <div class="setting-item" onclick="toggleSection('log')">
+      <span class="title"><i class="fa-solid fa-list-check"></i> Log Aktivitas</span>
+      <i class="fa-solid fa-chevron-down" id="icon-log"></i>
+    </div>
+    <div class="setting-section" id="log">
+      <table>
+        <tr>
+          <th>Tanggal</th>
+          <th>Pengguna</th>
+          <th>Aktivitas</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>12 Nov 2025</td>
+          <td>Admin</td>
+          <td>Tambah Jadwal</td>
+          <td>Sukses</td>
+        </tr>
+        <tr>
+          <td>10 Nov 2025</td>
+          <td>Penghuni</td>
+          <td>Upload Bukti Pembayaran</td>
+          <td>Sukses</td>
+        </tr>
+        <tr>
+          <td>07 Nov 2025</td>
+          <td>Admin</td>
+          <td>Ubah Data Asrama</td>
+          <td>Gagal</td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+</main>
+
+<script>
+function toggleSection(id){
+  const section = document.getElementById(id);
+  const icon = document.getElementById("icon-" + id);
+  if(section.style.display === "none" || section.style.display === ""){
+    section.style.display = "block";
+    icon.classList.remove("fa-chevron-down");
+    icon.classList.add("fa-chevron-up");
+  } else {
+    section.style.display = "none";
+    icon.classList.remove("fa-chevron-up");
+    icon.classList.add("fa-chevron-down");
+  }
+}
+
+function logout(){
+  if(confirm("Yakin ingin keluar?")){
+    window.location.href="index.html";
+  }
+}
+</script>
+
+</body>
+</html>

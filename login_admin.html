@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Admin - SIM Asrama UIN Saizu</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #eef6f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background-color: #ffffff;
+      border-radius: 20px;
+      padding: 50px 60px;
+      width: 420px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 15px;
+    }
+
+    .logo img {
+      width: 60px;
+      border-radius: 10px;
+    }
+
+    h2 {
+      color: #1b5e20;
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 25px;
+      font-size: 14px;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      color: #333;
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1.5px solid #cde2d2;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.2s;
+      background-color: #f9fcfa;
+    }
+
+    input:focus, select:focus {
+      border-color: #1b5e20;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #00a884;
+      border: none;
+      color: white;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s;
+      box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+    }
+
+    .login-btn:hover {
+      background-color: #009070;
+    }
+
+    .back-link {
+      margin-top: 20px;
+      display: inline-block;
+      color: #2e7d32;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: #1b5e20;
+    }
+
+    /* ============= RESPONSIVE UNTUK HP ============= */
+@media (max-width: 768px) {
+
+  body {
+    height: auto;
+    padding: 30px 15px;
+    
+  }
+
+  .login-container {
+    width: 100%;
+    padding: 35px 25px;
+    border-radius: 18px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  input, select {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .login-btn {
+    font-size: 14px;
+    padding: 11px;
+  }
+
+  .back-link {
+    font-size: 13px;
+    margin-top: 18px;
+  }
+
+  .logo img {
+    width: 55px;
+    height: 55px;
+  }
+}
+
+/* ============= LAYAR KECIL BANGET (≤ 400px) ============= */
+@media (max-width: 400px) {
+  .login-container {
+    padding: 28px 20px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .login-btn {
+    font-size: 13px;
+  }
+}
+/* Agar card benar-benar center di HP */
+@media (max-width: 768px) {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    min-height: 100vh; /* pastikan tetap full screen */
+    padding: 20px;
+  }
+
+  .login-container {
+    margin: auto; /* memastikan card tepat di tengah */
+  }
+}
+
+
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="logo">
+      <img src="logouin.jpg" alt="Logo UIN Saizu">
+    </div>
+    <h2>Login Admin</h2>
+    <p>Masuk untuk mengelola data penghuni dan aktivitas asrama.</p>
+
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="email">Email Admin</label>
+        <input type="email" id="email" placeholder="Masukkan Email Admin" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Kata Sandi</label>
+        <input type="password" id="password" placeholder="Masukkan Kata Sandi" required>
+      </div>
+
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select id="role" required>
+          <option value="">Pilih Role</option>
+          <option value="admin">Admin</option>
+          <option value="superadmin">Superadmin</option>
+        </select>
+      </div>
+
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+
+    <a href="index.html" class="back-link">← Kembali ke Beranda</a>
+  </div>
+
+  <script>
+    function handleLogin(event) {
+      event.preventDefault(); // cegah reload
+
+      const role = document.getElementById('role').value;
+
+      if (role === "admin") {
+        window.location.href = "dashboard_admin.html";
+      } else if (role === "superadmin") {
+        window.location.href = "superadmin.html";
+      } else {
+        alert("Silakan pilih role terlebih dahulu!");
+      }
+    }
+  </script>
+
+</body>
+</html>

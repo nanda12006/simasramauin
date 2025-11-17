@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jadwal - Admin Asrama</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+    body { display: flex; background-color: #f5f8f7; min-height: 100vh; overflow-x: hidden; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 250px; background-color: #007e5a; color: white;
+      display: flex; flex-direction: column; position: fixed; height: 100%;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.15); left: 0; top: 0;
+      transition: 0.3s;
+    }
+    .sidebar h2 { text-align: center; padding: 25px; background-color: #009b72; font-size: 18px; font-weight: 600; }
+    .sidebar ul { list-style: none; margin-top: 10px; }
+    .sidebar ul li {
+      padding: 14px 25px; cursor: pointer; transition: 0.3s;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sidebar ul li:hover,
+    .sidebar ul li.active { background-color: #00b985; }
+    .logout-btn {
+      background: none; color: white; border: 1px solid white;
+      padding: 10px 25px; border-radius: 25px; font-size: 14px;
+      cursor: pointer; margin: 30px auto; width: 80%; transition: 0.3s;
+    }
+    .logout-btn:hover { background: white; color: #007e5a; }
+
+    /* MAIN CONTENT */
+    .main-content { margin-left: 250px; padding: 30px 40px; width: calc(100% - 250px); transition: 0.3s; }
+
+    /* TOP BAR */
+    .top-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .left-group {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .top-bar h1 { color: #006d55; font-size: 24px; }
+
+    .profile {
+      display: flex; align-items: center; gap: 10px; background-color: #e8f3ef;
+      padding: 6px 15px; border-radius: 30px;
+    }
+    .profile img { width: 36px; height: 36px; border-radius: 50%; }
+
+    /* TABLE */
+    table {
+      width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    th, td { padding: 14px 18px; text-align: left; font-size: 14px; }
+    th { background-color: #009b72; color: white; }
+    tr:nth-child(even) { background-color: #f8f9f9; }
+    tr:hover { background-color: #e8f3ef; }
+    td button {
+      background-color: #009b72; color: white; border: none;
+      padding: 6px 12px; border-radius: 6px; margin-right: 6px; cursor: pointer; transition: 0.2s;
+    }
+    td button.edit { background-color: #007e5a; }
+    td button.delete { background-color: #d9534f; }
+
+    /* BUTTON TAMBAH */
+    .add-btn {
+      background-color: #009b72; color: white; border: none; padding: 10px 18px;
+      border-radius: 8px; cursor: pointer; font-weight: 500; margin-bottom: 20px; transition: 0.3s;
+    }
+
+    /* POPUP */
+    .popup {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4); justify-content: center; align-items: center;
+    }
+    .popup-content {
+      background: white; padding: 25px 30px; border-radius: 10px; width: 400px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .popup-content input,
+    .popup-content textarea {
+      width: 100%; padding: 10px 12px; margin: 8px 0 14px 0;
+      border: 1px solid #ccc; border-radius: 6px; font-size: 14px;
+    }
+
+    .popup-content textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    .save-btn {
+      padding: 10px 16px; background: #009b72; color: white; border: none;
+      border-radius: 6px; cursor: pointer; margin-right: 10px;
+    }
+    .cancel-btn {
+      padding: 10px 16px; background: #d9534f; color: white; border: none;
+      border-radius: 6px; cursor: pointer;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+
+      .sidebar {
+        width: 200px; left: -200px; z-index: 999; transition: 0.3s;
+      }
+      .sidebar.active { left: 0; }
+
+      .main-content { margin-left: 0; width: 100%; padding: 20px; }
+
+      .hamburger {
+        display: inline-block; cursor: pointer; padding: 8px 12px;
+        border-radius: 8px; background: #e8f3ef;
+      }
+      .hamburger i { width: 28px; height: 28px; color: #006d55; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <h2>Admin Asrama</h2>
+    <ul>
+      <li onclick="goTo('dashboard-admin.html')"><i data-feather="home"></i> Dashboard</li>
+      <li onclick="goTo('data-penghuni.html')"><i data-feather="users"></i> Data Penghuni</li>
+      <li class="active"><i data-feather="calendar"></i> Jadwal</li>
+      <li onclick="goTo('laporan.html')"><i data-feather="file-text"></i> Laporan</li>
+      <li onclick="goTo('pengaturan.html')"><i data-feather="settings"></i> Pengaturan</li>
+    </ul>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <div class="top-bar">
+      <div class="left-group">
+        <div class="hamburger" onclick="toggleSidebar()">
+          <i data-feather="menu"></i>
+        </div>
+        <h1>Jadwal Kegiatan Asrama</h1>
+      </div>
+
+      <div class="profile">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="">
+        <span>Admin Asrama</span>
+      </div>
+    </div>
+
+    <button class="add-btn" onclick="openPopup()">+ Tambah Jadwal</button>
+
+    <table id="jadwalTable">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama Kegiatan</th>
+          <th>Tanggal</th>
+          <th>Waktu</th>
+          <th>Tempat</th>
+          <th>Keterangan</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Pengajian Rutin</td>
+          <td>15 November 2025</td>
+          <td>19:30</td>
+          <td>Aula Utama</td>
+          <td>Wajib untuk seluruh penghuni</td>
+          <td>
+            <button class="edit" onclick="editRow(this)">Edit</button>
+            <button class="delete" onclick="deleteRow(this)">Hapus</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- POPUP -->
+  <div class="popup" id="popupForm">
+    <div class="popup-content">
+      
+      <h2 id="formTitle">Tambah Jadwal</h2>
+
+      <input type="text" id="namaKegiatan" placeholder="Nama Kegiatan">
+      <input type="date" id="tanggal">
+      <input type="time" id="waktu">
+      <input type="text" id="tempat" placeholder="Tempat">
+      <textarea id="keterangan" rows="3" placeholder="Keterangan (opsional)"></textarea>
+
+      <div>
+        <button class="save-btn" onclick="saveData()">Simpan</button>
+        <button class="cancel-btn" onclick="closePopup()">Batal</button>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+feather.replace();
+
+function goTo(p){ window.location.href = p; }
+function logout(){ if(confirm("Yakin ingin keluar?")) window.location.href="index.html"; }
+
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("active");
+}
+
+/* --- CRUD --- */
+let editIndex = null;
+
+function openPopup(edit=false){
+  document.getElementById("popupForm").style.display = "flex";
+  if(!edit){
+    document.getElementById("formTitle").innerText = "Tambah Jadwal";
+    clearForm();
+  }
+}
+function closePopup(){
+  document.getElementById("popupForm").style.display = "none";
+  editIndex = null;
+}
+function clearForm(){
+  namaKegiatan.value="";
+  tanggal.value="";
+  waktu.value="";
+  tempat.value="";
+  keterangan.value="";
+}
+
+function saveData(){
+  const nama = namaKegiatan.value;
+  const tgl = tanggal.value;
+  const wkt = waktu.value;
+  const tmp = tempat.value;
+  const ket = keterangan.value;
+
+  if(!nama || !tgl || !wkt || !tmp){
+    alert("Lengkapi data!");
+    return;
+  }
+
+  const table = document.querySelector("#jadwalTable tbody");
+
+  if(editIndex !== null){
+    const row = table.rows[editIndex];
+    row.cells[1].innerText = nama;
+    row.cells[2].innerText = tgl;
+    row.cells[3].innerText = wkt;
+    row.cells[4].innerText = tmp;
+    row.cells[5].innerText = ket;
+  } else {
+    const row = table.insertRow();
+    row.innerHTML = `
+      <td>${table.rows.length}</td>
+      <td>${nama}</td>
+      <td>${tgl}</td>
+      <td>${wkt}</td>
+      <td>${tmp}</td>
+      <td>${ket}</td>
+      <td>
+        <button class="edit" onclick="editRow(this)">Edit</button>
+        <button class="delete" onclick="deleteRow(this)">Hapus</button>
+      </td>
+    `;
+  }
+
+  closePopup();
+}
+
+function editRow(btn){
+  const row = btn.closest("tr");
+  editIndex = row.rowIndex - 1;
+
+  namaKegiatan.value = row.cells[1].innerText;
+  tanggal.value = row.cells[2].innerText;
+  waktu.value = row.cells[3].innerText;
+  tempat.value = row.cells[4].innerText;
+  keterangan.value = row.cells[5].innerText;
+
+  document.getElementById("formTitle").innerText = "Edit Jadwal";
+  openPopup(true);
+}
+
+function deleteRow(btn){
+  if(confirm("Yakin hapus?")){
+    btn.closest("tr").remove();
+  }
+}
+</script>
+
+</body>
+</html>

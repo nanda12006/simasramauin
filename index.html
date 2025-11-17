@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIM Asrama UIN Saizu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #f5faf8;
+      color: #222;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAVBAR ===== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      padding: 18px 50px;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      background-color: #00a884;
+      padding: 14px 50px;
+    }
+
+    header.scrolled .logo-text,
+    header.scrolled nav a {
+      color: #fff;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+    }
+
+    .logo-text {
+      font-weight: 600;
+      font-size: 18px;
+      color: #007a63;
+      transition: color 0.3s;
+    }
+
+    nav a {
+      text-decoration: none;
+      margin-left: 30px;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s;
+      cursor: pointer;
+      position: relative;
+      padding-bottom: 5px;
+    }
+
+    nav a:hover {
+      color: #00a884;
+    }
+
+    /* ===== Efek aktif di menu ===== */
+    nav a.active {
+      color: #00a884;
+      font-weight: 600;
+    }
+
+    nav a.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: #00a884;
+      border-radius: 2px;
+      animation: underline 0.3s ease;
+    }
+
+    @keyframes underline {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 80px 10%;
+      background-color: #ffffff;
+      border-radius: 20px;
+      margin: 60px auto;
+      width: 85%;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-text {
+      max-width: 48%;
+      animation: slideUp 0.8s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(25px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .hero-text h1 {
+      font-size: 32px;
+      color: #004f40;
+      margin-bottom: 15px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .hero-text p {
+      color: #555;
+      margin-bottom: 30px;
+      line-height: 1.7;
+    }
+
+    .hero-text button {
+      background-color: #00a884;
+      color: white;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0, 168, 132, 0.3);
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .hero-text button:hover {
+      background-color: #009070;
+      transform: translateY(-2px);
+    }
+
+    .hero-image {
+      width: 45%;
+      height: 320px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #e5f8f1;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+     /* ===== FORM REGISTRASI ===== */
+  #registerModal .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  #registerModal label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #004f40;
+    font-size: 14px;
+  }
+
+  #registerModal input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+    transition: border 0.3s, box-shadow 0.3s;
+  }
+
+  #registerModal input:focus {
+    border-color: #00a884;
+    box-shadow: 0 0 8px rgba(0, 168, 132, 0.2);
+  }
+
+  #registerModal .login-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 30px;
+    background-color: #00a884;
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  #registerModal .login-btn:hover {
+    background-color: #009070;
+    transform: translateY(-2px);
+  }
+
+  #registerModal .close-btn {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #777;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.2s;
+  }
+
+  #registerModal .close-btn:hover {
+    color: #333;
+  }
+
+    /* ===== FEATURES ===== */
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 25px;
+      width: 85%;
+      margin: 50px auto;
+    }
+
+    .feature-box {
+      flex: 1 1 calc(25% - 25px);
+      min-width: 220px;
+      background: #ffffff;
+      border-radius: 16px;
+      text-align: center;
+      padding: 30px 20px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+      transition: all 0.3s;
+    }
+
+    .feature-box:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.08);
+    }
+
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 18px;
+      background-color: #e2f7f0;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #00a884;
+    }
+
+    .feature-box h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #004f40;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 25px 0;
+      color: #555;
+      font-size: 14px;
+      background: #ffffff;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.03);
+      margin-top: 60px;
+    }
+
+    
+    /* ===== MODAL LOGIN ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 200;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.35);
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(3px);
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 50px 70px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      animation: popUp 0.3s ease;
+    }
+
+    @keyframes popUp {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-content h2 {
+      color: #007a63;
+      margin-bottom: 30px;
+      font-size: 22px;
+    }
+
+    .login-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .login-btn {
+      background-color: #00a884;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      min-width: 150px;
+    }
+
+    .login-btn:hover {
+      background-color: #009070;
+      transform: translateY(-2px);
+    }
+
+    .close-btn {
+      margin-top: 25px;
+      background: none;
+      border: none;
+      color: #777;
+      cursor: pointer;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+      color: #333;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+      }
+
+      .hero-text, .hero-image {
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .features {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav a {
+        margin-left: 15px;
+      }
+
+      .info-card {
+  flex: 1 1 100%;
+}
+
+    }
+
+    /* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: #333;
+  transition: 0.3s;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  nav {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background: white;
+    width: 200px;
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    z-index: 999;
+  }
+
+  nav.show {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+  /* ===== RESPONSIVE NAVBAR HP ===== */
+@media (max-width: 768px) {
+
+  /* Header lebih rapat */
+  header {
+    padding: 14px 25px;
+  }
+
+  /* Logo mengecil */
+  .logo img {
+    width: 32px;
+    height: 32px;
+  }
+  .logo-text {
+    font-size: 16px;
+  }
+
+  /* Sembunyikan nav default */
+  nav {
+    display: none;
+    position: absolute;
+    top: 75px;
+    right: 20px;
+    width: 200px;
+    background: white;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 12px;
+  }
+
+  /* Warna nav ketika header scrolled */
+  header.scrolled nav a {
+    color: #333;
+  }
+
+  nav a {
+    margin: 0;
+    padding: 10px 0;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  nav a:last-child {
+    border-bottom: none;
+  }
+
+  /* Tampilkan nav ketika hamburger dipencet */
+  nav.show {
+    display: flex;
+  }
+
+  /* Hamburger aktif */
+  .hamburger {
+    display: flex;
+  }
+
+  /* Biar header rapi */
+  header {
+    position: relative;
+  }
+
+}
+
+/* ============================
+   RESPONSIVE LOGIN & REGISTER
+   ============================ */
+@media (max-width: 768px) {
+
+  /* Modal agar tidak terlalu besar */
+  .modal-content {
+    width: 90%;
+    padding: 30px 25px;
+    border-radius: 16px;
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  /* Tombol login di modal login */
+  .login-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .login-btn {
+    width: 100%;
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  /* Form registrasi */
+  #registerModal .form-group label {
+    font-size: 13px;
+  }
+
+  #registerModal input {
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+
+  #registerModal .login-btn {
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 25px;
+  }
+
+  #registerModal .close-btn {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+}
+
+  /* ===== INFO KAMAR HOME ===== */
+.info-kamar {
+  width: 85%;
+  margin: 60px auto;
+  text-align: center;
+}
+
+.info-kamar h2 {
+  font-size: 26px;
+  color: #004f40;
+  margin-bottom: 35px;
+  font-weight: 700;
+}
+
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+}
+
+.info-card {
+  flex: 1 1 calc(25% - 25px);
+  min-width: 220px;
+  background: #ffffff;
+  padding: 30px 25px;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.info-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.icon-info {
+  font-size: 40px;
+  color: #00a884;
+  margin-bottom: 15px;
+}
+
+.info-card h3 {
+  font-size: 16px;
+  color: #004f40;
+  margin-bottom: 8px;
+}
+
+.info-card p {
+  font-size: 18px;
+  font-weight: 700;
+  color: #009070;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <header id="navbar">
+  <div class="logo">
+    <img src="logouin.jpg" alt="Logo UIN Saizu">
+    <div class="logo-text">SIM Asrama UIN Saizu</div>
+  </div>
+
+  <!-- HAMBURGER BUTTON -->
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- NAV -->
+  <nav id="navMenu">
+    <a href="index.html" class="active">Beranda</a>
+    <a href="tentang.html">Tentang</a>
+    <a id="loginLink">Login</a>
+    <a id="registerLink">Registrasi</a>
+  </nav>
+</header>
+
+
+  <!-- MODAL REGISTRASI -->
+<div id="registerModal" class="modal">
+  <div class="modal-content">
+    <h2>Registrasi Penghuni Baru</h2>
+    <form id="registerForm">
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input type="text" placeholder="Masukkan nama lengkap" required>
+      </div>
+      <div class="form-group">
+        <label>NIM</label>
+        <input type="text" placeholder="Masukkan NIM" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="Masukkan email" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="Masukkan password" required>
+      </div>
+      <div class="form-group">
+        <label>Konfirmasi Password</label>
+        <input type="password" placeholder="Ulangi password" required>
+      </div>
+      <button type="submit" class="login-btn">Daftar</button>
+    </form>
+    <button class="close-btn" id="closeRegister">Batal</button>
+  </div>
+</div>
+
+<script>
+  const registerModal = document.getElementById("registerModal");
+  const registerLink = document.getElementById("registerLink");
+  const closeRegister = document.getElementById("closeRegister");
+
+  registerLink.onclick = () => registerModal.style.display = "flex";
+  closeRegister.onclick = () => registerModal.style.display = "none";
+
+  window.onclick = (e) => {
+    if (e.target === registerModal) registerModal.style.display = "none";
+  };
+
+  // Optional: submit form handler
+  document.getElementById("registerForm").onsubmit = function(e){
+    e.preventDefault();
+    alert("Registrasi berhasil! (Dummy UI)");
+    registerModal.style.display = "none";
+  };
+</script>
+
+  <section class="hero">
+    
+    <div class="hero-text">
+      <h1>Sistem Informasi Manajemen Asrama UIN Saizu</h1>
+      <p>Platform digital untuk mengelola data penghuni, kegiatan, dan pembayaran asrama secara efisien, cepat, dan transparan.</p>
+      <button id="masukBtn">Masuk Sekarang</button>
+    </div>
+    <div class="hero-image">
+      <img src="asrama.jpg" alt="Asrama UIN Saizu">
+    </div>
+  </section>
+
+  <!-- ===== INFO KAMAR ===== -->
+<section class="info-kamar">
+  <h2>Informasi Asrama</h2>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <i class="fas fa-door-open icon-info"></i>
+      <h3>Kamar Kosong</h3>
+      <p>12 Kamar</p>
+    </div>
+
+    <div class="info-card">
+      <i class="fas fa-user-friends icon-info"></i>
+      <h3>Total Penghuni</h3>
+      <p>156 Orang</p>
+    </div>
+
+    <div class="info-card">
+      <i class="fas fa-bed icon-info"></i>
+      <h3>Kamar Terisi</h3>
+      <p>38 Kamar</p>
+    </div>
+
+    <div class="info-card">
+      <i class="fas fa-building icon-info"></i>
+      <h3>Total Kamar</h3>
+      <p>50 Kamar</p>
+    </div>
+  </div>
+</section>
+
+
+  <section class="features">
+    <div class="feature-box">
+      <div class="feature-icon"><i class="fas fa-users"></i></div>
+      <h3>Manajemen Penghuni</h3>
+    </div>
+    <div class="feature-box">
+      <div class="feature-icon"><i class="fas fa-credit-card"></i></div>
+      <h3>Pembayaran Online</h3>
+    </div>
+    <div class="feature-box">
+      <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+      <h3>Jadwal Kegiatan</h3>
+    </div>
+    <div class="feature-box">
+      <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+      <h3>Laporan Asrama</h3>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 SIM Asrama UIN Saizu — All Rights Reserved
+  </footer>
+
+  <!-- ===== POPUP LOGIN ===== -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h2>Pilih Jenis Login</h2>
+      <div class="login-buttons">
+        <button class="login-btn" onclick="window.location.href='login_admin.html'">Login Admin</button>
+        <button class="login-btn" onclick="window.location.href='login_user.html'">Login Penghuni</button>
+      </div>
+      <button class="close-btn" id="closeModal">Batal</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("loginModal");
+    const loginLink = document.getElementById("loginLink");
+    const closeModal = document.getElementById("closeModal");
+    const masukBtn = document.getElementById("masukBtn");
+    const navbar = document.getElementById("navbar");
+
+    loginLink.onclick = () => modal.style.display = "flex";
+    masukBtn.onclick = () => modal.style.display = "flex";
+    closeModal.onclick = () => modal.style.display = "none";
+
+    window.onclick = (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    };
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 40) {
+        navbar.classList.add("scrolled");
+      } else {
+        navbar.classList.remove("scrolled");
+      }
+    });
+  </script>
+
+
+  <script>
+  const hamburger = document.getElementById("hamburger");
+  const navMenu = document.getElementById("navMenu");
+
+  hamburger.addEventListener("click", () => {
+    navMenu.classList.toggle("show");
+  });
+</script>
+
+</body>
+</html>
